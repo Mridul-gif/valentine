@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: #ffebf0;
+            font-family: 'Comic Sans MS', cursive;
+            text-align: center;
+            padding: 20px;
+        }
+        .hidden { display: none; }
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        #hearts, #balloons {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+        }
+        .heart, .balloon {
+            position: absolute;
+            animation: float 6s infinite linear;
+        }
+        .heart { font-size: 24px; }
+        .balloon {
+            font-size: 40px;
+            animation-duration: 8s;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+        #finalMessage {
+            white-space: pre-line;
+            line-height: 1.6;
+            text-align: left;
+            padding: 20px;
+        }
+        #finalMessage h2 {
+            text-align: center;
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div id="codeEntry" class="section">
+        <h3>Hint: It's what we share 🧠</h3>
+        <input type="text" id="codeInput" placeholder="Enter code word">
+        <button onclick="checkCode()">Submit</button>
+    </div>
+
+    <div id="mainContent" class="hidden">
+        <div class="section" id="q1">
+            <h3>Who's better at texting first?</h3>
+            <button onclick="showResponse('q1', 'Exactly. Carrying this relationship on my back like a champ.')">Me (You)</button>
+            <button onclick="showResponse('q1', 'Wow, self-love is important, I respect it. But still, cap.')">You (Her)</button>
+        </div>
+
+        <div class="section hidden" id="q2">
+            <h3>Who wins in an argument?</h3>
+            <button onclick="showResponse('q2', 'That’s crazy because I don’t recall ever winning one. Explain??')">You</button>
+            <button onclick="showResponse('q2', 'ofc, my love')">Me</button>
+        </div>
+
+        <div class="section hidden" id="q3">
+            <h3>Who’s the better cuddler? 🛏️💞</h3>
+            <button onclick="showResponse('q3', 'we never cuddles to begin this tho. ;(')">You</button>
+            <button onclick="showResponse('q3', 'bitch, we never cuddled to begin with')">Me</button>
+        </div>
+
+        <div class="section hidden" id="jokeWarning">
+            <h3>🚨 Cringe Alert 🚨</h3>
+            <p>now there r some lame ass wannabe jokes incoming, sorry for being cringe lol</p>
+            <button onclick="nextSection('jokeWarning', 'j1')">Bring it on!</button>
+        </div>
+
+        <div class="section hidden" id="j1">
+            <h3>Are you a parking ticket? Because you’ve got FINE written all over you.</h3>
+            <button onclick="showResponse('j1', 'That’s crazy because I was gonna pay this fine with my heart.')">Yes</button>
+            <button onclick="showResponse('j1', 'Nah, you are. I’d commit traffic violations just to see you.')">No</button>
+        </div>
+
+        <div class="section hidden" id="j2">
+            <h3>Are you French? Because Eiffel for you.</h3>
+            <button onclick="showResponse('j2', 'That’s wild because I’ve been surrendering my heart to you since day one. 🇫🇷')">Yes</button>
+            <button onclick="showResponse('j2', 'Damn. That’s tough. But I still fell. RIP me.')">No</button>
+        </div>
+
+        <div class="section hidden" id="husbandQ">
+            <h3>Do you remember the dream where I was ur *good husband* lol</h3>
+            <p>if u want to make it reality press yes (I doubt it after all this cringe ngl)</p>
+            <button onclick="handleHusbandAnswer()">Yes</button>
+            <button onclick="alert('Invalid wrong ans lol')">No</button>
+        </div>
+
+        <div class="section hidden" id="finalQ">
+            <h3>Would you be my Valentine forever?</h3>
+            <button onclick="showFinalMessage()">Yes</button>
+        </div>
+
+        <div class="section hidden" id="finalMessage"></div>
+    </div>
+
+    <div id="hearts" class="hidden"></div>
+    <div id="balloons" class="hidden"></div>
+
+    <script>
+        function checkCode() {
+            if(document.getElementById('codeInput').value.toLowerCase() === 'samebraincells') {
+                document.getElementById('codeEntry').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+                alert('yeh samebraincells and dono dhakan');
+            }
+        }
+
+        function showResponse(sectionId, response) {
+            alert(response);
+            document.getElementById(sectionId).classList.add('hidden');
+            const nextSection = {
+                q1: 'q2', q2: 'q3', q3: 'jokeWarning',
+                j1: 'j2', j2: 'husbandQ'
+            }[sectionId] || 'finalQ';
+            document.getElementById(nextSection).classList.remove('hidden');
+        }
+
+        function nextSection(current, next) {
+            document.getElementById(current).classList.add('hidden');
+            document.getElementById(next).classList.remove('hidden');
+        }
+
+        function handleHusbandAnswer() {
+            document.getElementById('husbandQ').classList.add('hidden');
+            document.getElementById('finalQ').classList.remove('hidden');
+        }
+
+        function createHearts() {
+            const heartsDiv = document.getElementById('hearts');
+            for(let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heartsDiv.appendChild(heart);
+            }
+        }
+
+        function showFinalMessage() {
+            createHearts();
+            document.getElementById('hearts').classList.remove('hidden');
+            document.getElementById('finalQ').classList.add('hidden');
+            
+            const finalMessage = document.getElementById('finalMessage');
+            finalMessage.classList.remove('hidden');
+            
+            finalMessage.innerHTML = `
+                <h2>💝 Happy Valentine's Day, My Love 💝</h2>
+                <div id="balloons"></div>
+                <p>
+                    It's been 2 years, 4 months, and 4 days since we started talking again (after our childhood friendship) through Instagram, and it's been 1 year, 3 months, and 9 days since we officially started dating. From the moment I started talking to you again, I’ve cherished every single second. I love our conversations, and I always will.<br><br>
+
+                    You are truly a gift to me—if God exists, then I swear he gave me the best one. But honestly, I’m just so glad I was active on Instagram that night, on October 10, 2022, around 9-10 PM. I’m glad I replied to your note, 'Half love, half regret,' because if I had hesitated that day, I would have missed out on making such beautiful memories with you.<br><br>
+
+                    I really, really, REALLY love you. Every single memory with you is precious to me, and I never want to share you with anyone. I want to keep all of you for myself—and all our moments too, lol. You’ve helped me in ways you don’t even realize. You changed my entire perspective on life, made me stop overthinking (okay, maybe just less overthinking, but still a win), and helped me break free from habits I never thought I could leave behind. And most importantly, you never let me feel lonely. You’ve always been there—a whole package of love, comfort, and chaos wrapped into one person.<br><br>
+
+                    I don’t even know what I’m saying anymore, but maan, I just really appreciate you being in my life. And I hope it stays that way forever.<br><br>
+
+                    You remember when I used to talk about the dark, pitch-black future that scared me? Whenever I imagine you in it, the fear disappears, replaced by nothing but a pure, genuine smile. It’s comforting to know that in this unpredictable future, we have someone. And not just someone—you. The love of my life.<br><br>
+
+                    This is our second Valentine’s like this, but I hope that by next year, we’ll be together in person. I miss you all the time, and I can’t wait for the day when, instead of typing all this, I’ll be sitting beside you, saying it out loud—embarrassing or not.<br><br>
+
+                    Honestly, I wanted to make something way better than this, not this lame-ass attempt, but I didn’t have the time. :( But my love for you isn’t just for February—I love you every month, every day, every second. And I’ll always try to make things better for you.<br><br>
+
+                    Oh, and did I mention? I REALLY, REALLY LOVE YOUUUUUUUUUUUUUU!** ❤️
+                </p>
+                <p style="text-align: center; font-weight: bold;">- Your love, Mridul.</p>
+            `;
+
+            // Add floating balloons
+            const balloonsDiv = document.getElementById('balloons');
+            for(let i = 0; i < 30; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.innerHTML = '🎈';
+                balloon.style.left = Math.random() * 100 + '%';
+                balloon.style.animationDelay = Math.random() * 3 + 's';
+                balloonsDiv.appendChild(balloon);
+            }
+        }
+    </script>
+</body>
+</html>
